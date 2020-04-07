@@ -1,91 +1,25 @@
-CREMI Python Scripts
-====================
+# Automated Image Segmentation on Neurons
 
-Python scripts associated with the [CREMI Challenge](http://cremi.org).
+[![School](https://img.shields.io/badge/UChicago-MSCA-red)]() [![Course](https://img.shields.io/badge/Course-DataMining-lightgray)]()  [![Contributors](https://img.shields.io/badge/Contributors-5-green)]() [![Repo Size](https://img.shields.io/github/commit-activity/y/benedictau1993/spotify_recommendation_engine.svg)]()
 
-Installation
-------------
+# Research Motivation
 
-If you are using `pip`, installing the scripts is as easy as
+Image segmentation is a key topic in image processing and computer vision with applications such as scene understanding, medical image analysis, robotic perception, video surveillance, augmented reality, and image compression, amongst many others. Various algorithms for image segmentation have been developed in the literature. Large Scale Inference is still an open problem for dense image segmentation and is a key step into any kind of supervised or unsupervised method for machine learning.
 
-```
-pip install git+https://github.com/cremi/cremi_python.git
-```
+With recent advancements in techniques for image segmentation, it is now possible to replace traditional complex multi-step segmentation pipelines with a single neural network that is learned end-to-end. Computational costs aside, the problem of agglomeration of various established convolutional networks for segmentation remains and is up for further investigation.
 
-Alternatively, you can clone this repository yourself and use `distutils`
-```
-python setup.py install
-```
-or just include the `cremi_python` directory to your `PYTHONPATH`.
+The frameworks and knowledge generated from tackling these problems can be easily applied to other image problems, specifically for detecting segments.
 
-Reading and writing of CREMI files
-----------------------------------
 
-We recommend you use the `cremi.io` package for reading and writing of the
-CREMI files. This way, you can be sure that the submissions you produce are of
-the form that is expected by the challenge server, and that compression is
-used.
+## Research Statement
 
-You open a file by instantiating a `CremiFile` object:
-```python
-from cremi.io import CremiFile
-file = CremiFile("example.hdf", "r")
-```
-The second argument specifies the mode, which is `"r"` for reading, `"w"` for
-writing a new file (careful, this replaces an existing file with the same
-name), and `"a"` to append or change an existing file.
+Neural pathway reconstruction from serial section electron microscopy (ssEM) data reveals synaptic associations among classes of neurons, which in turn advances our understanding of the infrastructure and communication within the nervous system. However, current approaches to neuron segmentations often require hundreds of man-hours of expert annotation. For computer vision to be most useful in practice, segmentation algorithms must generalize across brain tissues to allow completely automated mapping of neural circuits. Furthermore, it is paramount that an image segmentation network well-trained on a certain portion of data be transferable for inference on a different portion of data. Therefore, we aim to extend the current literature by developing an automated image segmentation method that is iteratively optimized and extensive to various neural circuits. Ultimately, we hope such approaches can be extended to various image identification problems.
 
-The `CremiFile` class provides read and write methods for each of the challenge
-datasets. To read the neuron IDs in the training volumes, for example, use
-`read_neuron_ids()`:
-```python
-neuron_ids = file.read_neuron_ids()
-```
-This returns the `neuron_ids` as a `cremi.Volume`, which contains an HDF5 dataset (`neuron_ids.data`) and some meta-information. If you are using the padded version of the volumes, `neuron_ids.offset` will contain the starting point of `neuron_ids` inside the `raw` volume. Note that these numbers are given in nm.
+## Data Description
 
-To save a dataset, use the appropriate write method, e.g.,:
-```
-file.write_neuron_ids(neuron_ids)
-```
-See the included `example_read.py` and `example_write.py` for more details.
+Our data comes in two parts. First, we use the Circuit Reconstruction from Electron Microscopy Images (CREMI) dataset, which in itself is a collection of three datasets (1.5 GB each), each consisting of two 5x5x5 μm volumes (training and testing, each 1250×1250×125 px) of serial section electron microscopy of the adult fly brain. Each volume has neuron and synapse labelings and annotations for pre-and postsynaptic partners. We use these annotations as ground truth to train our networks (Google Flood Fill Network, U-NET, TopoNet, SpyNet, etc.) We would then apply our networks to the Octopus brain dataset of the Argonne National Laboratory (around 1TB per unit), each sampled at 6x6x30 nm resolution. 
 
-Evaluation
-----------
-
-For each of the challenge categories, you find an evaluation class in
-`cremi.evaluation`, which are `NeuronIds`, `Clefts`, and `SynapticPartners`.
-
-After you read a test file `test` and a ground truth file `truth`, you can
-evaluate your results by instantiating these classes as follows:
-```python
-from cremi.evaluation import NeuronIds, Clefts, SynapticPartners
-
-neuron_ids_evaluation = NeuronIds(truth.read_neuron_ids())
-(voi_split, voi_merge) = neuron_ids_evaluation.voi(test.read_neuron_ids())
-adapted_rand = neuron_ids_evaluation.adapted_rand(test.read_neuron_ids())
-
-clefts_evaluation = Clefts(test.read_clefts(), truth.read_clefts())
-fp_count = clefts_evaluation.count_false_positives()
-fn_count = clefts_evaluation.count_false_negatives()
-fp_stats = clefts_evaluation.acc_false_positives()
-fn_stats = clefts_evaluation.acc_false_negatives()
-
-synaptic_partners_evaluation = SynapticPartners()
-fscore = synaptic_partners_evaluation.fscore(
-    test.read_annotations(),
-    truth.read_annotations(),
-    truth.read_neuron_ids())
-```
-See the included `example_evaluate.py` for more details. The metrics are
-described in more detail on the [CREMI Challenge website](http://cremi.org/metrics/).
-
-Acknowledgements
-----------------
-
-Evaluation code contributed by:
-
-  * [Jan Funke](https://github.com/funkey)
-  * [Juan Nunez-Iglesias](http://github.com/jni)
-  * [Philipp Hanslovsky](http://github.com/hanslovsky)
-  * [Stephan Saalfeld](http://github.com/axtimwalde)
-# Neuron Segmentation Capstone
+## Team
+- **Benedict Au** - [Github](https://github.com/benedictau1993/)
+- **Jenny Zhen** - [Github](https://github.com/JennyZhen95)
+- **Amanda Zang** - [Github](https://github.com/AmandaZang)
