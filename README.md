@@ -1,6 +1,6 @@
 # Automated Image Segmentation on Neurons
 
-[![School](https://img.shields.io/badge/UChicago-MSCA-red)]() [![Field](https://img.shields.io/badge/Field-ComputerVision-lightgray)]()  [![Contributors](https://img.shields.io/badge/Contributors-3-green)]() 
+[![School](https://img.shields.io/badge/UChicago-MSCA-red)]() [![Field](https://img.shields.io/badge/Field-ComputerVision-lightgray)]()  [![Contributors](https://img.shields.io/badge/Contributors-3-green)]()
 
 # Research Motivation
 
@@ -18,6 +18,12 @@ Neural pathway reconstruction from serial section electron microscopy (ssEM) dat
 ## Data Description
 
 Our data comes in two parts. First, we use the Circuit Reconstruction from Electron Microscopy Images (CREMI) dataset, which in itself is a collection of three datasets (1.5 GB each), each consisting of two 5x5x5 μm volumes (training and testing, each 1250×1250×125 px) of serial section electron microscopy of the adult fly brain. Each volume has neuron and synapse labelings and annotations for pre-and postsynaptic partners. We use these annotations as ground truth to train our networks (Google Flood Fill Network, U-NET, TopoNet, SpyNet, etc.) We would then apply our networks to the Octopus brain dataset of the Argonne National Laboratory (around 1TB per unit), each sampled at 6x6x30 nm resolution.
+
+Here's what a mapped neuron looks like!
+
+![CREMINeuronViewer Demo](demo/CREMINeuronViewer.gif)
+
+
 
 ## Team
 - **Benedict Au** - [Github](https://github.com/benedictau1993/)
