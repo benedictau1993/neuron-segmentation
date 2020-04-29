@@ -13,7 +13,7 @@ def sample_cremi(file, z, x, y):
     x: int, in [1:1250]
     y: int, in [1:1250]
     
-    Example call:
+    Example:
     sample_cremi("./data_cremi/sample_C_20160501.hdf", 100, 100, 100)
     """
 
@@ -23,11 +23,17 @@ def sample_cremi(file, z, x, y):
         print("Found raw image volume")
         seg = h5file["/volumes/labels/neuron_ids"]
         print("Found neuron_ids labels volume")
-        image_sample = image[:z, :x, :y]
-        seg_sample = seg[:z, :x, :y]
+        image_sample = image[:z, :x, :y].astype("uint8")
+        seg_sample = seg[:z, :x, :y].astype("uint8")
         print(f"Created samples: {z}x{x}x{y}")
         print(f"Creating datasets in {file}")
         h5file.create_dataset("volumes/sample/raw",  data=image_sample)
         print("volumes/sample/raw")
         h5file.create_dataset("volumes/sample/neuron_ids",  data=seg_sample)
         print("volumes/sample/neuron_ids")
+
+sample_cremi("./data_cremi/sample_A_20160501.hdf", 100, 100, 100)
+sample_cremi("./data_cremi/sample_B_20160501.hdf", 100, 100, 100)
+sample_cremi("./data_cremi/sample_C_20160501.hdf", 100, 100, 100)
+
+print("Done!")
